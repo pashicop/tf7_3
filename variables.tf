@@ -28,7 +28,7 @@ locals {
   }
   instances = {
     stage = {
-      debian: 1,
+      debian: 2,
     },
     prod = {
       debian: 4,
