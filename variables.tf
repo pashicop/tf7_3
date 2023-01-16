@@ -26,4 +26,14 @@ locals {
     stage   = 1
     prod    = 2
   }
+  instances = {
+    stage = {
+      debian: 1,
+    },
+    prod = {
+      debian: 4,
+      debian2: 4,
+    }
+
+  }
 }

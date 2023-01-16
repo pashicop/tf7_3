@@ -31,6 +31,31 @@ resource "yandex_compute_instance" "vm-1" {
   }
 }
 
+resource "yandex_compute_instance" "vm-2" {
+  for_each = local.instances[terraform.workspace]
+  name = "${each.key}"
+#  inst_count = each.value
+  resources {
+    cores  = each.value
+    memory = local.memory[terraform.workspace]
+  }
+
+  boot_disk {
+    initialize_params {
+      image_id = "fd82vol772l2nq9p12pb"
+    }
+  }
+
+  network_interface {
+    subnet_id = yandex_vpc_subnet.subnet-1.id
+    nat       = true
+  }
+
+  metadata = {
+    ssh-keys = "debian:${file("~/.ssh/id_rsa.pub")}"
+  }
+}
+
 resource "yandex_vpc_network" "network-1" {
   name = "network1"
 }
