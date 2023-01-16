@@ -10,3 +10,20 @@ variable "YC_FOLDER_ID" {
   default = ""
 }
 
+locals {
+  cores = {
+    default = 2
+    stage   = 2
+    prod    = 4
+  }
+  memory = {
+    default = 4
+    stage   = 4
+    prod    = 8
+  }
+  count = {
+    default = 1
+    stage   = 1
+    prod    = 2
+  }
+}

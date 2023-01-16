@@ -1,17 +1,18 @@
 provider "yandex" {
   token = var.YC_TOKEN
-  #  service_account_key_file = "path_to_service_account_key_file"
+#  service_account_key_file = ""
   cloud_id  = var.YC_CLOUD_ID
   folder_id = var.YC_FOLDER_ID
   zone      = "ru-central1-a"
 }
 
 resource "yandex_compute_instance" "vm-1" {
-  name = "tftest"
+  name = "tftest-${count.index}"
+  count = local.count[terraform.workspace]
 
   resources {
-    cores  = 2
-    memory = 2
+    cores  = local.cores[terraform.workspace]
+    memory = local.memory[terraform.workspace]
   }
 
   boot_disk {
@@ -41,11 +42,11 @@ resource "yandex_vpc_subnet" "subnet-1" {
   v4_cidr_blocks = ["192.168.10.0/24"]
 }
 
-output "internal_ip_address_vm_1" {
-  value = yandex_compute_instance.vm-1.network_interface.0.ip_address
-}
-
-
-output "external_ip_address_vm_1" {
-  value = yandex_compute_instance.vm-1.network_interface.0.nat_ip_address
-}
+#output "internal_ip_address_vm_1" {
+#  value = yandex_compute_instance.vm-1.network_interface.0.ip_address
+#}
+#
+#
+#output "external_ip_address_vm_1" {
+#  value = yandex_compute_instance.vm-1[count.index].network_interface.0.nat_ip_address
+#}
